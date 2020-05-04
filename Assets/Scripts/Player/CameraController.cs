@@ -10,7 +10,11 @@ public class CameraController : MonoBehaviour
     public Vector3 lookOffset = new Vector3(0,0,0);
     private float _rotY;
     private Vector3 _offset;
+    private float _rotationX = 0;
     
+    public float sensitivityVert = 9.0f;
+    public float minimumVert = -45f;
+    public float maximumVert = 45f;
 	void Start ()
     {
         _rotY = transform.rotation.y;
@@ -35,5 +39,14 @@ public class CameraController : MonoBehaviour
         transform.position = playerTransform.position - (rotation * _offset);
         //Make camera look at player
         transform.LookAt(playerTransform.position+lookOffset);
+
+
+        //control vertical 
+         _rotationX -= Input.GetAxis("Mouse Y") * sensitivityVert;
+            _rotationX = Mathf.Clamp(_rotationX, minimumVert, maximumVert);
+
+            float rotationY = transform.localEulerAngles.y;
+
+            transform.localEulerAngles = new Vector3(_rotationX, rotationY, 0);
 	}
 }
